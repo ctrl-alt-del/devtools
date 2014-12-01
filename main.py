@@ -34,3 +34,15 @@ def getAllJavaFiles(path):
 			resultList.append(path+"/"+name)
 
 	return resultList
+
+
+path = ""
+global x
+x = []
+javaFilePaths = getAllJavaFiles(path)
+for line in javaFilePaths:
+	x.append(getPackageLine(line))
+
+for line in javaFilePaths:
+	print line
+	getImportLines(line)
