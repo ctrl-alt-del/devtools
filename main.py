@@ -14,9 +14,10 @@ def getImportLines(path):
 	        	mLine = line.lstrip("import").strip().rstrip(";")
 	        	
 	        	if mLine in x:
-	        		print "--> " + mLine
+	        		print " +----> " + mLine
 	        		
 	        elif "{" in line:
+	        	print ''
 	        	break
 
 def getAllJavaFiles(path):
@@ -44,5 +45,5 @@ for line in javaFilePaths:
 	x.append(getPackageLine(line))
 
 for line in javaFilePaths:
-	print line
+	print '\-> ' + line
 	getImportLines(line)
