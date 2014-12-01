@@ -1,5 +1,11 @@
 #! /usr/bin/python
 import os
+def getPackageLine(path):
+	with open(path) as infile:
+	    for line in infile:
+	        if "package" in line:
+	        	return line.lstrip("package").strip().rstrip(";") + "." + os.path.basename(path).rstrip(".java;")
+
 
 def getAllJavaFiles(path):
 	resultList = []
