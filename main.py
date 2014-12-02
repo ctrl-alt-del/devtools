@@ -77,7 +77,11 @@ for line in javaFilePaths:
 
 mostly_called_class_name = ''
 mostly_called_class_count = 0
-for key in x:	if class_statistic[key] > mostly_called_class_count:
+for key in x:
+	if class_statistic[key] > 0:
+		print key + ": " + str(class_statistic[key])
+	
+
 	if class_statistic[key] > mostly_called_class_count:
 		mostly_called_class_count = class_statistic[key]
 		mostly_called_class_name = key
