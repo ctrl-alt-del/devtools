@@ -18,17 +18,20 @@ def getPackageLine(path):
 	        	return line.lstrip("package").strip().rstrip(";") + "." + os.path.basename(path).rstrip(".java;")
 
 def getImportLines(path):
+	resultList = []
 	with open(path) as infile:
 	    for line in infile:
 	        if "import" in line:
 	        	mLine = line.lstrip("import").strip().rstrip(";")
 	        	
 	        	if mLine in x:
-	        		print " +----> " + mLine
+	        		# print " +----> " + mLine
+	        		resultList.append(mLine)
 	        		
 	        elif "{" in line:
-	        	print ''
 	        	break
+
+	    return resultList
 
 def getAllJavaFiles(path):
 	resultList = []
