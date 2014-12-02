@@ -53,10 +53,17 @@ def getAllJavaFiles(path):
 path = ""
 global x
 x = []
+class_statistic = {}
 javaFilePaths = getAllJavaFiles(path)
 for line in javaFilePaths:
-	x.append(getPackageLine(line))
+	pLine = getPackageLine(line)
+	x.append(pLine)
+	class_statistic[pLine] = 0
 
 for line in javaFilePaths:
 	print '\-> ' + line
-	getImportLines(line)
+	for subline in getImportLines(line):
+		class_statistic[subline] = class_statistic[subline] + 1
+		print " +----> " + subline
+
+	print ''
