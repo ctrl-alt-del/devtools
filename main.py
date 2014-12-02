@@ -1,6 +1,16 @@
 #! /usr/bin/python
 import os
 
+def isInterface(path):
+	with open(path) as infile:
+	    for line in infile:
+	        if "public interface" in line:
+	        	return True
+	        elif "{" in line:
+	        	break
+
+	    return False
+
 def getPackageLine(path):
 	with open(path) as infile:
 	    for line in infile:
