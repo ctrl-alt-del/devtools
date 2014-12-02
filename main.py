@@ -60,8 +60,15 @@ for line in javaFilePaths:
 	x.append(pLine)
 	class_statistic[pLine] = 0
 
+print "\n=== Statistics Details ===\n"
 for line in javaFilePaths:
 	print '\-> ' + line
+	if isInterface(line):
+		print '(Interface) ' + line
+		continue
+	else:
+		print '\-> ' + line
+
 	for subline in getImportLines(line):
 		class_statistic[subline] = class_statistic[subline] + 1
 		print " +----> " + subline
