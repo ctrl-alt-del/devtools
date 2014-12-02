@@ -67,3 +67,14 @@ for line in javaFilePaths:
 		print " +----> " + subline
 
 	print ''
+
+mostly_called_class_name = ''
+mostly_called_class_count = 0
+for key in x:	if class_statistic[key] > mostly_called_class_count:
+	if class_statistic[key] > mostly_called_class_count:
+		mostly_called_class_count = class_statistic[key]
+		mostly_called_class_name = key
+
+print "\n=== Statistics Summary ===\n"
+print "mostly_called_class_name: " + mostly_called_class_name
+print "mostly_called_class_count: " + str(mostly_called_class_count)
