@@ -1,7 +1,7 @@
 #! /usr/bin/python
 import os
 
-def isInterface(path):
+def is_interface(path):
     with open(path) as infile:
         for line in infile:
             if "public interface" in line:
@@ -11,13 +11,13 @@ def isInterface(path):
 
         return False
 
-def getPackageLine(path):
+def get_package(path):
     with open(path) as infile:
         for line in infile:
             if "package" in line:
                 return line.lstrip("package").strip().rstrip(";") + "." + os.path.basename(path).rstrip(".java;")
 
-def getImportLines(path):
+def get_import_files(path):
     resultList = []
     with open(path) as infile:
         for line in infile:
@@ -33,7 +33,7 @@ def getImportLines(path):
 
         return resultList
 
-def getAllJavaFiles(path):
+def get_java_files(path):
     resultList = []
     for name in os.listdir(path):
 
@@ -41,7 +41,7 @@ def getAllJavaFiles(path):
             continue
 
         if os.path.isdir(path+"/"+name):
-            for each in getAllJavaFiles(path+"/"+name):
+            for each in get_java_files(path+"/"+name):
                 resultList.append(each)
 
         if ".java" in name:
@@ -54,22 +54,22 @@ path = ""
 global x
 x = []
 class_statistic = {}
-javaFilePaths = getAllJavaFiles(path)
+javaFilePaths = get_java_files(path)
 for line in javaFilePaths:
-    pLine = getPackageLine(line)
+    pLine = get_package(line)
     x.append(pLine)
     class_statistic[pLine] = 0
 
 print "\n=== Statistics Details ===\n"
 for line in javaFilePaths:
     print '\-> ' + line
-    if isInterface(line):
+    if is_interface(line):
         print '(Interface) ' + line
         continue
     else:
         print '\-> ' + line
 
-    for subline in getImportLines(line):
+    for subline in get_import_files(line):
         class_statistic[subline] = class_statistic[subline] + 1
         print " +----> " + subline
 
