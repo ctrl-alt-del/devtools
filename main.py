@@ -17,14 +17,14 @@ def get_package(path):
             if "package" in line:
                 return line.lstrip("package").strip().rstrip(";") + "." + os.path.basename(path).rstrip(".java;")
 
-def get_import_files(path):
+def get_import_files(path, meaningful_classes):
     resultList = []
     with open(path) as infile:
         for line in infile:
             if "import" in line:
                 mLine = line.lstrip("import").strip().rstrip(";")
 
-                if mLine in x:
+                if mLine in meaningful_classes:
                     # print " +----> " + mLine
                     resultList.append(mLine)
 
@@ -51,13 +51,12 @@ def get_java_files(path):
 
 
 path = ""
-global x
-x = []
+meaningful_classes = []
 class_statistic = {}
 javaFilePaths = get_java_files(path)
 for line in javaFilePaths:
     pLine = get_package(line)
-    x.append(pLine)
+    meaningful_classes.append(pLine)
     class_statistic[pLine] = 0
 
 print "\n=== Statistics Details ===\n"
@@ -69,7 +68,7 @@ for line in javaFilePaths:
     else:
         print '\-> ' + line
 
-    for subline in get_import_files(line):
+    for subline in get_import_files(line, meaningful_classes):
         class_statistic[subline] = class_statistic[subline] + 1
         print " +----> " + subline
 
@@ -77,7 +76,7 @@ for line in javaFilePaths:
 
 mostly_called_class_name = ''
 mostly_called_class_count = 0
-for key in x:
+for key in meaningful_classes:
     if class_statistic[key] > 0:
         print key + ": " + str(class_statistic[key])
 
