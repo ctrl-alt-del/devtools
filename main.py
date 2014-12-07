@@ -1,5 +1,6 @@
 #! /usr/bin/python
 import os
+import JavaClass
 
 def is_interface(path):
     with open(path) as infile:
@@ -61,16 +62,20 @@ for line in javaFilePaths:
 
 print "\n=== Statistics Details ===\n"
 for line in javaFilePaths:
-    print '\-> ' + line
-    if is_interface(line):
-        print '(Interface) ' + line
+
+    jc = JavaClass.JavaClass(line)
+
+    print '\-> ' + jc.path
+
+    if is_interface(jc.path):
+        print '(Interface) ' + jc.path
         continue
     else:
-        print '\-> ' + line
+        print '\-> ' + jc.path
 
-    for subline in get_import_files(line, meaningful_classes):
-        class_statistic[subline] = class_statistic[subline] + 1
-        print " +----> " + subline
+    for import_file in get_import_files(jc.path, meaningful_classes):
+        class_statistic[import_file] = class_statistic[import_file] + 1
+        print " +----> " + import_file
 
     print ''
 
