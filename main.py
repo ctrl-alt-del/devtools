@@ -39,14 +39,12 @@ for line in java_file_paths:
 
 print "\n=== Statistics Details ===\n"
 for line in java_file_paths:
-    # print '\-> ' + line
 
-    j = JavaClass.JavaClass(line, meaningful_classes)
+    jc = JavaClass.JavaClass(line, meaningful_classes)
+    jc.print_class()
 
-    j.print_class()
-
-    for subline in j.import_files:
-        class_statistic[subline] = class_statistic[subline] + 1
+    for import_file in jc.import_files:
+        class_statistic[import_file] = class_statistic[import_file] + 1
 
 mostly_called_class_name = ''
 mostly_called_class_count = 0
