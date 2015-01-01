@@ -2,15 +2,6 @@
 import os
 import JavaClass
 
-def is_interface(path):
-    with open(path) as infile:
-        for line in infile:
-            if "public interface" in line:
-                return True
-            elif "{" in line:
-                break
-
-        return False
 
 def get_package(path):
     with open(path) as infile:
@@ -18,21 +9,6 @@ def get_package(path):
             if "package" in line:
                 return line.lstrip("package").strip().rstrip(";") + "." + os.path.basename(path).rstrip(".java;")
 
-def get_import_files(path, meaningful_classes):
-    resultList = []
-    with open(path) as infile:
-        for line in infile:
-            if "import" in line:
-                mLine = line.lstrip("import").strip().rstrip(";")
-
-                if mLine in meaningful_classes:
-                    # print " +----> " + mLine
-                    resultList.append(mLine)
-
-            elif "{" in line:
-                break
-
-        return resultList
 
 def get_java_files(path):
     resultList = []
@@ -41,50 +17,46 @@ def get_java_files(path):
         if name != "src" and "src" not in path:
             continue
 
-        if os.path.isdir(path+"/"+name):
-            for each in get_java_files(path+"/"+name):
+        if os.path.isdir(path + "/" + name):
+            for each in get_java_files(path + "/" + name):
                 resultList.append(each)
 
         if ".java" in name:
-            resultList.append(path+"/"+name)
+            resultList.append(path + "/" + name)
 
     return resultList
 
 
 path = ""
+
 meaningful_classes = []
 class_statistic = {}
-javaFilePaths = get_java_files(path)
-for line in javaFilePaths:
+java_file_paths = get_java_files(path)
+for line in java_file_paths:
     pLine = get_package(line)
     meaningful_classes.append(pLine)
     class_statistic[pLine] = 0
 
 print "\n=== Statistics Details ===\n"
-for line in javaFilePaths:
+for line in java_file_paths:
+    # print '\-> ' + line
 
-    jc = JavaClass.JavaClass(line)
+    j = JavaClass.JavaClass(line, meaningful_classes)
 
-    print '\-> ' + jc.path
+    j.print_class()
 
-    if is_interface(jc.path):
-        print '(Interface) ' + jc.path
-        continue
-    else:
-        print '\-> ' + jc.path
-
-    for import_file in get_import_files(jc.path, meaningful_classes):
-        class_statistic[import_file] = class_statistic[import_file] + 1
-        print " +----> " + import_file
-
-    print ''
+    for subline in j.import_files:
+        class_statistic[subline] = class_statistic[subline] + 1
 
 mostly_called_class_name = ''
 mostly_called_class_count = 0
+max_length = len(str(max(class_statistic.values())))
 for key in meaningful_classes:
-    if class_statistic[key] > 0:
-        print key + ": " + str(class_statistic[key])
 
+    stat = class_statistic[key]
+    if stat > 0:
+        extra_spaces = " " * (max_length - len(str(stat)))
+        print "[" + extra_spaces + str(stat) + "]: " + key
 
     if class_statistic[key] > mostly_called_class_count:
         mostly_called_class_count = class_statistic[key]
