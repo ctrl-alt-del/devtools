@@ -1,5 +1,5 @@
-# All Pycharm stuffs
-.idea/*
+# All Jetbrains IDE files
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
